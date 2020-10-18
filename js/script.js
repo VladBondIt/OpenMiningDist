@@ -1,6 +1,3 @@
-// Это не ошибка все ОК
-
-
 // Функция проверки возможности отображения WEBP
 function testWebP(callback) {
 
@@ -20,18 +17,104 @@ testWebP(function (support) {
     }
 });
 
-//          !!SPOILERS!!
+// !!!! BURGER 
 
-const spoilers = document.querySelectorAll('.faq__spoiler')
+const burger = document.querySelector('.header__burger'),
+    menu = document.querySelector('.header__menu'),
+    headerLinks = document.querySelectorAll('.header__link'),
+    body = document.querySelector('body');
 
-spoilers.forEach(spoiler => {
-    spoiler.addEventListener('click', (e) => {
-        if (e.currentTarget) {
-            spoiler.classList.toggle('active')
-            spoiler.nextElementSibling.classList.toggle('active')
-        }
+function toggleBurger() {
+    burger.classList.toggle('active')
+    menu.classList.toggle('active')
+    body.classList.toggle('lock')
+}
+
+burger.addEventListener('click', () => {
+    toggleBurger();
+})
+
+headerLinks.forEach(item => {
+    item.addEventListener('click', () => {
+        toggleBurger();
+    })
+});
+
+// !!!! POP UP !!!!
+
+const popUp = document.querySelector('.popup-login'),
+    popInner = document.querySelector('.popup-login__content'),
+    popBtns = document.querySelectorAll('.pop-trigg'),
+    popBody = document.querySelector('.popup-login__body'),
+    closeBtns = document.querySelectorAll('.close-popup');
+
+
+function openPopup() {
+    popUp.classList.add('open');
+    popInner.classList.add('open');
+    body.classList.add('lock-pop');
+}
+function closePopup() {
+    popUp.classList.remove('open');
+    popInner.classList.remove('open');
+    body.classList.remove('lock-pop');
+}
+
+closeBtns.forEach(closeBtnItem => {
+    closeBtnItem.addEventListener('click', (e) => {
+        e.preventDefault();
+        closePopup();
     });
 });
+
+popBody.addEventListener('click', (e) => {
+    if (e.target === popBody) {
+        closePopup();
+    }
+});
+
+for (let i = 0; i < popBtns.length; i++) {
+    popBtns[i].addEventListener('click', (e) => {
+        e.preventDefault();
+        openPopup();
+    })
+}
+
+
+
+//          !!SPOILERS!!
+
+const spoilers = document.querySelectorAll('.faq__spoiler');
+
+spoilers.forEach(spoiler => {
+    spoiler.addEventListener('click', () => {
+
+        // ЕСЛИ НУЖЕН АККОРДИОН, ДОБАВЛЯЕМ ЦИКЛ С ПРОВЕРКОЙ СООТВЕТСВИЯ ЭЛЕМЕНТОВ КЛИКА
+
+        spoilers.forEach(item => {
+            if (item != spoiler) {
+                item.classList.remove('active')
+                item.nextElementSibling.classList.remove('active')
+            }
+        });
+        spoiler.classList.toggle('active');
+        spoiler.nextElementSibling.classList.toggle('active');
+    });
+});
+
+const descSpoilers = document.querySelectorAll('.description__item');
+
+descSpoilers.forEach(item => {
+    item.addEventListener('click', () => {
+        // for (let i = 0; i < descSpoilers.length; i++) {
+        //     if (item != descSpoilers[i]) {
+        //         descSpoilers[i].nextElementSibling.classList.remove('active')
+        //     }
+        // }
+        item.nextElementSibling.classList.toggle('active')
+    })
+});
+
 
 //    !!!CALCULATOR!!!
 
@@ -124,7 +207,6 @@ trigSelection.addEventListener('click', () => {
 options.forEach(item => {
     item.addEventListener('click', (e) => {
         box.innerHTML = item.querySelector('.calc__var-box').innerHTML;
-        trigSelection.style.height = 60 + 'px';
         trigSelection.classList.remove('active');
         trigSelection.nextElementSibling.classList.remove('is-active');
         for (let i = 0; i < options.length; i++) {
@@ -138,7 +220,7 @@ options.forEach(item => {
 });
 
 
-
+// CHANGE CURRENCY
 
 function calcCurrency() {
     let x = parseInt(rangeSliderTh.value);
@@ -159,7 +241,7 @@ function calcCurrency() {
 
 
 
-// !!!! OUTPUT NUMERIC FUNCTION
+// !!!! OUTPUT NUMERIC RESULT
 function parseNum() {
     let day = outputSliderDay.value;
     let outRub = parseInt(day) * calcRubPerTh();
